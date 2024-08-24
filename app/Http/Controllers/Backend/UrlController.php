@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UrlSubmissionRequest;
 use App\Jobs\ProcessUrls;
+use App\Models\Url;
 use Illuminate\Http\Request;
 
 class UrlController extends Controller
@@ -36,7 +37,34 @@ class UrlController extends Controller
         }
         */
 
-        return redirect()->route('url.create')->with('success', $message);
+        return redirect()->route('url.list')->with('success', $message);
     }
 
+    public function list(Request $request){
+        $query = Url::query();
+
+        // Search functionality
+        if ($request->has('search')) {
+            $query->where('full_url', 'like', '%' . $request->search . '%')
+                ->orWhere('created_at', 'like', '%' . $request->search . '%');
+        }
+
+        // Sorting functionality
+        if ($request->has('sort_by') && $request->has('sort_dir')) {
+            $query->orderBy($request->sort_by, $request->sort_dir);
+        } else {
+            $query->orderBy('created_at', 'desc'); // Default sorting
+        }
+
+        // Pagination
+        $urls = $query->paginate($request->get('limit', 10));
+
+        // Ajax request
+        if($request->ajax()){
+            return response()->json($urls);
+        }
+
+        return view('pages.url.list', compact('urls'));
+
+    }
 }

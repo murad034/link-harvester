@@ -17,4 +17,6 @@ npm-debug.log
 yarn-error.log
 /.fleet
 /.idea
+composer.lock
+package-lock.json
 /.vscode
