@@ -1,0 +1,51 @@
+FROM php:8.2-apache
+LABEL Author="Murad" Description="Docker image to run php:8.2-apache"
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    wget \
+    build-essential \
+    libpng-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libicu-dev \
+    libonig-dev \
+    libzip-dev \
+    libwebp-dev \
+    libjpeg-dev \
+    supervisor
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install GD extension with WebP support
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
+RUN docker-php-ext-install -j$(nproc) gd
+
+# Install other extensions
+RUN docker-php-ext-install pdo_mysql mbstring zip exif intl
+
+# Install Redis extension
+RUN pecl install redis && \
+    docker-php-ext-enable redis
+
+#Enable Apache modules
+RUN a2enmod rewrite
+
+# Example: Remove existing files
+RUN rm -rf *
+
+# Copy project files and set permissions
+WORKDIR /var/www/html
+COPY --chown=www-data:www-data . /var/www/html
+RUN chown -R www-data:www-data /var/www/html
+RUN chmod -R 755 /var/www/html
+
+# Copy apache configuration file
+COPY default.conf /etc/apache2/sites-enabled/000-default.conf
