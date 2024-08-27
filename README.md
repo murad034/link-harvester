@@ -128,6 +128,7 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 ## Overview Video
 
 <p>Below is the overview video of the application:</p>
+<a href="https://www.awesomescreenshot.com/video/30913586?key=54690a0c2b58df40480cf84e74f96261">Watch the video</a>
 
 <video width="600" controls>
    <source src="images/overview.webm" type="video/webm">
@@ -138,7 +139,7 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 ##Useful Docker Commands
 <p>Here are some useful Docker commands for managing your application:</p>
 
-12. **Build the Docker Image:**
+12. **Useful command to build the Docker Image:**
 
     ```bash
     docker-compose build
