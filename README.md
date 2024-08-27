@@ -66,7 +66,8 @@ Before getting started, ensure that you have the following tools installed:
      docker run --rm -v $(pwd):/var/www/html link_harvester npm run build
 
 
-##Configuration
+## Configuration
+
 <p>Docker Setup</p>
 The Docker setup for this project is managed through the `docker-compose.yml` file. It configures two primary services:
 
@@ -76,7 +77,7 @@ db: This service runs a MySQL database container, which the Laravel application 
 
 Make sure to adjust the environment variables in the docker-compose.yml file according to your local setup, such as database credentials and host information.
 
-##Supervisor Configuration
+## Supervisor Configuration
 
 The Supervisor configuration is used to manage background processes for the application. The configuration is specified in supervisord.conf, where it defines:
 
@@ -136,7 +137,9 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 </video>
  
 
-##Useful Docker Commands
+
+
+## Useful Docker Commands
 <p>Here are some useful Docker commands for managing your application:</p>
 
 12. **Useful command to build the Docker Image:**
