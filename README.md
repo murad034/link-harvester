@@ -7,60 +7,154 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About the Project
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project is a Laravel-based application designed to process and insert URLs into a database. The application is containerized using Docker, manages queue workers with Supervisor. The front-end is enhanced using Alpine.js & Bootstrap.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Building the Docker Image](#building-the-docker-image)
+- [Running the Application](#running-the-application)
+- [Managing the Queue Worker](#managing-the-queue-worker)
+- [Screenshots](#screenshots)
+- [Useful Docker Commands](#useful-docker-commands)
+- [License](#license)
 
-## Learning Laravel
+## Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Before getting started, ensure that you have the following tools installed:
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Git](https://git-scm.com/)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Installation
 
-## Laravel Sponsors
+1. **Clone the Repository**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```bash
+   git clone https://github.com/murad034/link-harvester.git
+   cd link-harvester
 
-### Premium Partners
+2. **Copy the `.env` file**
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+   ```bash
+   cp .env.example .env
+   
+3. **Generate the Application Key**
+    ```bash
+    docker run --rm -v $(pwd):/var/www/html link_harvester php artisan key:generate
 
-## Contributing
+4. **Update Environment Variables**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    Open the .env file and update the necessary environment variables, including database credentials.
 
-## Code of Conduct
+5. **Install Composer Dependencies**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+   ```bash
+   docker run --rm -v $(pwd):/var/www/html link_harvester composer install
+   
+6. **Build Front-End Assets(For Development)**
+    ```bash
+    docker run --rm -v $(pwd):/var/www/html link_harvester npm run dev
 
-## Security Vulnerabilities
+7. **Build Front-End Assets(For Production)**
+     ```bash
+     docker run --rm -v $(pwd):/var/www/html link_harvester npm run build
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+##Configuration
+<p>Docker Setup</p>
+The Docker setup for this project is managed through the `docker-compose.yml` file. It configures two primary services:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+app: This service runs the Laravel application using PHP 8.2 with Apache It is responsible for serving the application and includes volume mounts for the code and environment variables for configuration
+
+db: This service runs a MySQL database container, which the Laravel application uses to store and retrieve data. It includes environment variables for database configuration and persists data using Docker volumes.
+
+Make sure to adjust the environment variables in the docker-compose.yml file according to your local setup, such as database credentials and host information.
+
+##Supervisor Configuration
+
+The Supervisor configuration is used to manage background processes for the application. The configuration is specified in supervisord.conf, where it defines:
+
+Apache Server: Managed by Supervisor to ensure it runs continuously in the foreground.
+
+Laravel Queue Worker: Configured to process background jobs. Supervisor ensures that the worker process starts automatically and restarts if it crashes.
+
+## Building the Docker Image
+
+8. **To build the Docker image for the application, run**
+
+   ```bash
+   docker-compose build
+
+## Running the Application
+9. **To start the application and services, run**
+
+   ```bash
+   docker-compose up -d
+
+10. **This command will start the application in detached mode. You can check the logs with:**
+
+   ```bash
+   docker-compose logs -f
+  
+
+## Screenshots
+ <p>Below are some screenshots of the application:</p>
+ 
+ <p>Application Overview</p>
+ 
+ <p>URL List</p>
+ 
+ ![URL List](image/URLs-List.png)
+ 
+ <p>Create URL</p>
+ 
+ ![Create URL](image/create-URLs.png)
+ 
+ <p>DB URL Tabel</p>
+  
+ ![DB URL Table](image/url-table.png)
+ 
+ <p>DB Domain Table</p>
+
+ ![DB Domain Table](image/domain-table.png)
+ 
+
+## Overview Video
+
+<p>Below is the overview video of the application:</p>
+
+<video width="600" controls>
+   <source src="images/overview.webm" type="video/webm">
+   Your browser does not support the video tag.
+</video>
+ 
+
+##Useful Docker Commands
+<p>Here are some useful Docker commands for managing your application:</p>
+
+11. **Build the Docker Image:**
+
+    ```bash
+    docker-compose build
+    docker-compose up -d
+    docker-compose down
+    docker-compose logs -f
+    docker system prune -a
+    docker ps
+    docker images
+    docker rmi -f d4d(Image ID)
+    docker-compose exec app php artisan optimize:cache
+    wsl
+    sudo su
+    docker-compose exec app supervisorctl reread
+    docker-compose exec app supervisorctl update
+    docker-compose exec app supervisorctl restart laravel-worker:*
+
+#License
+This project is licensed under the [MIT License](https://opensource.org/license/MIT)
