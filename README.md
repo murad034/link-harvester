@@ -43,25 +43,33 @@ Before getting started, ensure that you have the following tools installed:
 
    ```bash
    cp .env.example .env
-   
-3. **Generate the Application Key**
-    ```bash
-    docker run --rm -v $(pwd):/var/www/html link_harvester php artisan key:generate
 
-4. **Update Environment Variables**
+3. **Update Environment Variables**
 
     Open the .env file and update the necessary environment variables, including database credentials.
 
-5. **Install Composer Dependencies**
+4. **Install Composer Dependencies**
 
    ```bash
    docker run --rm -v $(pwd):/var/www/html link_harvester composer install
+
+5. **Generate the Application Key**
+    ```bash
+    docker run --rm -v $(pwd):/var/www/html link_harvester php artisan key:generate
+
+6. **Run database migration for creating tables**
+    ```bash
+    docker run --rm -v $(pwd):/var/www/html link_harvester php artisan migrate
+
+7. **Install Front-End Assets**
+    ```bash
+    docker run --rm -v $(pwd):/var/www/html link_harvester npm install
    
-6. **Build Front-End Assets(For Development)**
+8. **Build Front-End Assets(For Development)**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester npm run dev
 
-7. **Build Front-End Assets(For Production)**
+9. **Build Front-End Assets(For Production)**
      ```bash
      docker run --rm -v $(pwd):/var/www/html link_harvester npm run build
 
