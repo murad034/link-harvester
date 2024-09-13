@@ -97,18 +97,18 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 
 10. **To build the Docker image for the application, run**
 
-   ```bash
+    ```bash
    docker-compose build
 
 ## Running the Application
 11. **To start the application and services, run**
 
-   ```bash
+    ```bash
    docker-compose up -d
 
 12. **This command will start the application in detached mode. You can check the logs with:**
    
-   ```bash
+    ```bash
    docker-compose logs -f
   
 
