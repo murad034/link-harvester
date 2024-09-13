@@ -48,28 +48,30 @@ Before getting started, ensure that you have the following tools installed:
 
     Open the .env file and update the necessary environment variables, including database credentials.
 
-4. **Install Composer Dependencies**
+## If the below command is not working for not building the docker image, go to #10 and #11 then again run the below
+
+5. **Install Composer Dependencies**
 
    ```bash
    docker run --rm -v $(pwd):/var/www/html link_harvester composer install
 
-5. **Generate the Application Key**
+6. **Generate the Application Key**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester php artisan key:generate
 
-6. **Run database migration for creating tables**
+7. **Run database migration for creating tables**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester php artisan migrate
 
-7. **Install Front-End Assets**
+8. **Install Front-End Assets**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester npm install
    
-8. **Build Front-End Assets(For Development)**
+9. **Build Front-End Assets(For Development)**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester npm run dev
 
-9. **Build Front-End Assets(For Production)**
+10. **Build Front-End Assets(For Production)**
      ```bash
      docker run --rm -v $(pwd):/var/www/html link_harvester npm run build
 
@@ -95,21 +97,18 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 
 ## Building the Docker Image
 
-8. **To build the Docker image for the application, run**
-
-   ```bash
-   docker-compose build
+10. **To build the Docker image for the application, run**
+    ```bash
+    docker-compose build
 
 ## Running the Application
-9. **To start the application and services, run**
+11. **To start the application and services, run**
+    ```bash
+    docker-compose up -d
 
-   ```bash
-   docker-compose up -d
-
-9. **This command will start the application in detached mode. You can check the logs with:**
-   
-   ```bash
-   docker-compose logs -f
+12. **This command will start the application in detached mode. You can check the logs with:**
+    ```bash
+    docker-compose logs -f
   
 
 ## Screenshots
@@ -150,7 +149,7 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 ## Useful Docker Commands
 <p>Here are some useful Docker commands for managing your application:</p>
 
-12. **Useful command to build the Docker Image:**
+13. **Useful command to build the Docker Image:**
 
     ```bash
     docker-compose build
