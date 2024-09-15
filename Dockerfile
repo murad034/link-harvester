@@ -1,62 +1,63 @@
-FROM php:8.2-apache
-LABEL Author="Murad" Description="Docker image to run php:8.2-apache"
+# FROM php:8.2-apache
+# LABEL Author="Murad" Description="Docker image to run php:8.2-apache"
 
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    wget \
-    build-essential \
-    libpng-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl \
-    libicu-dev \
-    libonig-dev \
-    libzip-dev \
-    libwebp-dev \
-    libjpeg-dev \
-    supervisor
+# # Install dependencies
+# RUN apt-get update && apt-get install -y \
+#     wget \
+#     build-essential \
+#     libpng-dev \
+#     libfreetype6-dev \
+#     locales \
+#     zip \
+#     jpegoptim optipng pngquant gifsicle \
+#     vim \
+#     unzip \
+#     git \
+#     curl \
+#     libicu-dev \
+#     libonig-dev \
+#     libzip-dev \
+#     libwebp-dev \
+#     libjpeg-dev \
+#     supervisor
 
-# Install Node.js and npm
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs
+# # Install Node.js and npm
+# RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+#     apt-get install -y nodejs
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# # Install Composer
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+# # Clear cache
+# RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install GD extension with WebP support
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
-RUN docker-php-ext-install -j$(nproc) gd
+# # Install GD extension with WebP support
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
+# RUN docker-php-ext-install -j$(nproc) gd
 
-# Install other extensions
-RUN docker-php-ext-install pdo_mysql mbstring zip exif intl
+# # Install other extensions
+# RUN docker-php-ext-install pdo_mysql mbstring zip exif intl
 
-# Install Redis extension
-RUN pecl install redis && \
-    docker-php-ext-enable redis
+# # Install Redis extension
+# RUN pecl install redis && \
+#     docker-php-ext-enable redis
 
-#Enable Apache modules
-RUN a2enmod rewrite
+# #Enable Apache modules
+# RUN a2enmod rewrite
 
-# Example: Remove existing files
-RUN rm -rf *
+# # Example: Remove existing files
+# RUN rm -rf *
 
-# Copy project files and set permissions
-WORKDIR /var/www/html
-COPY --chown=www-data:www-data . /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html
+# # Copy project files and set permissions
+# WORKDIR /var/www/html
+# COPY --chown=www-data:www-data . /var/www/html
+# RUN chown -R www-data:www-data /var/www/html
+# RUN chmod -R 755 /var/www/html
 
-# Copy apache configuration file
-COPY default.conf /etc/apache2/sites-enabled/000-default.conf
-#FROM base_docker:v1
+# # Copy apache configuration file
+# COPY default.conf /etc/apache2/sites-enabled/000-default.conf
+
+FROM base_docker:v1
 
 # Copy Supervisor configuration
 #COPY supervisord.conf /etc/supervisor/conf.d/laravel-worker.conf
