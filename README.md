@@ -50,28 +50,28 @@ Before getting started, ensure that you have the following tools installed:
 
 ## If the below command is not working for not building the docker image, go to #10 and #11 then again run the below
 
-5. **Install Composer Dependencies**
+4. **Install Composer Dependencies**
 
    ```bash
    docker run --rm -v $(pwd):/var/www/html link_harvester composer install
 
-6. **Generate the Application Key**
+5. **Generate the Application Key**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester php artisan key:generate
 
-7. **Run database migration for creating tables**
+6. **Run database migration for creating tables**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester php artisan migrate
 
-8. **Install Front-End Assets**
+7. **Install Front-End Assets**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester npm install
    
-9. **Build Front-End Assets(For Development)**
+8. **Build Front-End Assets(For Development)**
     ```bash
     docker run --rm -v $(pwd):/var/www/html link_harvester npm run dev
 
-10. **Build Front-End Assets(For Production)**
+9. **Build Front-End Assets(For Production)**
      ```bash
      docker run --rm -v $(pwd):/var/www/html link_harvester npm run build
 
@@ -109,6 +109,10 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 12. **This command will start the application in detached mode. You can check the logs with:**
     ```bash
     docker-compose logs -f
+
+13. **Go to browser and hit below url for locally running project:**
+    ```bash
+    http://localhost:8081
   
 
 ## Screenshots
@@ -149,7 +153,7 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
 ## Useful Docker Commands
 <p>Here are some useful Docker commands for managing your application:</p>
 
-13. **Useful command to build the Docker Image:**
+14. **Useful command to build the Docker Image:**
 
     ```bash
     docker-compose build
