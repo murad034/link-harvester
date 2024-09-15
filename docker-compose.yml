@@ -12,7 +12,7 @@ services:
       - .:/var/www/html
       #- "/mnt/d/laragon/www/interview/link-harvester:/var/www/html"
     ports:
-      - "8000:80"
+      - "8081:80"
       - "443:443"
     depends_on:
       - db
