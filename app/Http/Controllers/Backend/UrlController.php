@@ -7,6 +7,8 @@ use App\Http\Requests\UrlSubmissionRequest;
 use App\Jobs\ProcessUrls;
 use App\Models\Url;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class UrlController extends Controller
 {
@@ -17,6 +19,10 @@ class UrlController extends Controller
     public function store(UrlSubmissionRequest $request) {
         $data = $request->all();
         $urls = explode("\n", str_replace("\r", "", trim($data['urls'])));
+
+        Cache::put('url_key_cache', 'url_key_cache_123:  '.$data['urls'], now()->addMinutes(10)); // Store for 10 minutes
+
+        session(['url_key_session' => 'url_key_session_341:  '.$data['urls']]);
 
         // Dispatch the job to process the URLs in the background
         $result = ProcessUrls::dispatch($urls);

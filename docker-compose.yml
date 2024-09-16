@@ -16,6 +16,7 @@ services:
       - "443:443"
     depends_on:
       - db
+      - redis
     networks:
       - app-network
     environment:
@@ -27,6 +28,10 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - CACHE_STORE=${CACHE_STORE}
+      - SESSION_DRIVER=${SESSION_DRIVER}
 
   # configure the database service
   db:
@@ -47,6 +52,28 @@ services:
       SERVICE_NAME: mysql
     volumes:
       - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: link_harvester_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+  redisadmin:
+    image: erikdubbelboer/phpredisadmin
+    container_name: link_harvester_redisadmin
+    ports:
+      - "8082:80"
+    environment:
+      REDIS_1_HOST: link_harvester_redis
+      REDIS_1_PORT: 6379
+    depends_on:
+      - redis
     networks:
       - app-network
 
