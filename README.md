@@ -110,7 +110,7 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
     ```bash
     docker-compose logs -f
 
-13. **Go to browser and hit below url for locally running project:**
+13. **Go to the browser and hit the below URL for locally running project:**
     ```bash
     http://localhost:8081
   
@@ -165,11 +165,65 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
     docker images
     docker rmi -f d4d(Image ID)
     docker-compose exec app php artisan optimize:cache
+
+    //Convert Linux terminal from any Windows terminal
     wsl
     sudo su
+
+    // nginx start status
+    sudo systemctl status nginx
+    sudo systemctl stop nginx
+
+    // manually supervisor status
     docker-compose exec app supervisorctl reread
     docker-compose exec app supervisorctl update
     docker-compose exec app supervisorctl restart laravel-worker:*
+    
+    // cache clear command in container & build-up
+    docker-compose exec app php artisan config:clear
+    docker exec -it link_harvester php artisan config:clear
+    docker exec -it link_harvester php artisan cache:clear
+    docker exec -it link_harvester php artisan optimize:clear
+    docker-compose down
+    docker-compose build
+    docker-compose up -d
+
+    // log for link harvester container
+    docker logs link_harvester
+    docker-compose up
+
+    // supervisor manually checks status, start, stop & restart
+    docker exec -it link_harvester supervisorctl reread
+    docker exec -it link_harvester supervisorctl update
+    docker exec -it link_harvester supervisorctl restart all
+    docker exec -it link_harvester supervisorctl status
+    docker exec -it link_harvester supervisorctl stop all
+    docker exec -it link_harvester supervisorctl start all
+    docker exec -it link_harvester supervisorctl stop laravel-worker:laravel-worker_00
+    docker exec -it link_harvester supervisorctl start laravel-worker:laravel-worker_00
+    
+    // check Redis enable or not, result PONG
+    docker exec -it link_harvester_redis redis-cli ping
+    
+    docker exec -it link_harvester_redis redis-cli FLUSHALL
+    docker exec -it link_harvester_redis redis-cli MONITOR
+
+    // Redis shows queue, cache, session data using below command
+    docker exec -it link_harvester_redis redis-cli
+    keys *
+    lrange queues:default 0 -1
+    lrange link_harvester_database_queues:default 0 -1
+    get link_harvester_database_InArKQBOUfF41MbNJTjRrZqAadTr1x7mxJhnSMhP
+
+
+    // install predis, telescope, debugger
+    docker exec -it link_harvester composer require predis/predis
+    docker exec -it link_harvester composer require barryvdh/laravel-debugbar
+    docker exec -it link_harvester  composer require laravel/telescope
+    docker exec -it link_harvester php artisan vendor:publish --provider="Barryvdh\Debugbar\ServiceProvider"
+    docker exec -it link_harvester php artisan telescope:install
+    docker exec -it link_harvester php artisan tinker
+    
 
 #License
 This project is licensed under the [MIT License](https://opensource.org/license/MIT)
