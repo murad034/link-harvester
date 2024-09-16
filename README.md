@@ -183,6 +183,8 @@ Redis: Redis is used for caching, session handling, and managing queue jobs. Sup
     // nginx start status
     sudo systemctl status nginx
     sudo systemctl stop nginx
+    sudo systemctl start nginx
+    sudo systemctl disable nginx
 
     // manually supervisor status
     docker-compose exec app supervisorctl reread
