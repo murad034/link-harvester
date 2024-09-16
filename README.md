@@ -85,7 +85,11 @@ app: This service runs the Laravel application using PHP 8.2 with Apache It is r
 
 db: This service runs a MySQL database container, which the Laravel application uses to store and retrieve data. It includes environment variables for database configuration and persists data using Docker volumes.
 
-Make sure to adjust the environment variables in the docker-compose.yml file according to your local setup, such as database credentials and host information.
+redis: Redis is used to handle caching, session management, and queue management for the Laravel application. The Redis service runs in its own container using the `redis:alpine` image. It exposes port `6379`, and you can configure it using environment variables such as `REDIS_HOST` and `REDIS_PORT`. The Redis container automatically restarts if it encounters any issues, ensuring that caching and queue management services are always running.
+
+redisadmin: To manage Redis visually, the project uses a Redis Admin interface through the `erikdubbelboer/phpredisadmin` image. This service allows you to view and manage Redis keys and data via a web interface. It exposes port `8082` and connects to the Redis service defined in the same Docker network.
+
+Make sure to adjust the environment variables in the docker-compose.yml file according to your local setup, such as database credentials, host & redis information.
 
 ## Supervisor Configuration
 
@@ -94,6 +98,8 @@ The Supervisor configuration is used to manage background processes for the appl
 Apache Server: Managed by Supervisor to ensure it runs continuously in the foreground.
 
 Laravel Queue Worker: Configured to process background jobs. Supervisor ensures that the worker process starts automatically and restarts if it crashes.
+
+Redis: Redis is used for caching, session handling, and managing queue jobs. Supervisor ensures that Redis remains available by running it continuously in the background.
 
 ## Building the Docker Image
 
@@ -110,9 +116,13 @@ Laravel Queue Worker: Configured to process background jobs. Supervisor ensures 
     ```bash
     docker-compose logs -f
 
-13. **Go to the browser and hit the below URL for locally running project:**
+13. **Go to the browser and hit the below URL for the locally running project:**
     ```bash
     http://localhost:8081
+
+14. **Go to the browser and hit the below URL for the locally checking Redis queue, cache & session:**
+    ```bash
+    http://localhost:8082
   
 
 ## Screenshots
